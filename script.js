@@ -3,6 +3,7 @@ const board = document.getElementById("board");
 const scoreEl = document.getElementById("score");
 const restartBtn = document.getElementById("restart");
 const speedInput = document.getElementById("speed");
+const touchControls = document.querySelector(".touch-controls");
 
 let cells = [];
 let snake = [];
@@ -12,6 +13,7 @@ let food = null;
 let score = 0;
 let timer = null;
 let paused = false;
+let touchStart = null;
 
 function idx(x, y) {
   return y * SIZE + x;
@@ -114,13 +116,17 @@ function setDirection(x, y) {
   nextDir = { x, y };
 }
 
+function togglePause() {
+  paused = !paused;
+}
+
 window.addEventListener("keydown", (e) => {
   const k = e.key.toLowerCase();
   if (k === "arrowup" || k === "w") setDirection(0, -1);
   else if (k === "arrowdown" || k === "s") setDirection(0, 1);
   else if (k === "arrowleft" || k === "a") setDirection(-1, 0);
   else if (k === "arrowright" || k === "d") setDirection(1, 0);
-  else if (k === " ") paused = !paused;
+  else if (k === " ") togglePause();
   else if (k === "r") resetGame();
 });
 
@@ -131,3 +137,48 @@ resetGame();
 setSpeed();
 
 speedInput.addEventListener("input", setSpeed);
+
+if (touchControls) {
+  touchControls.addEventListener("click", (e) => {
+    const btn = e.target.closest("button");
+    if (!btn) return;
+    const dirName = btn.dataset.dir;
+    const action = btn.dataset.action;
+
+    if (action === "pause") return togglePause();
+    if (!dirName) return;
+
+    if (dirName === "up") setDirection(0, -1);
+    else if (dirName === "down") setDirection(0, 1);
+    else if (dirName === "left") setDirection(-1, 0);
+    else if (dirName === "right") setDirection(1, 0);
+  });
+}
+
+board.addEventListener("touchstart", (e) => {
+  const t = e.touches[0];
+  touchStart = { x: t.clientX, y: t.clientY };
+}, { passive: true });
+
+board.addEventListener("touchmove", (e) => {
+  if (!touchStart) return;
+  const t = e.touches[0];
+  const dx = t.clientX - touchStart.x;
+  const dy = t.clientY - touchStart.y;
+  const absX = Math.abs(dx);
+  const absY = Math.abs(dy);
+  const threshold = 24;
+
+  if (absX < threshold && absY < threshold) return;
+
+  if (absX > absY) {
+    setDirection(dx > 0 ? 1 : -1, 0);
+  } else {
+    setDirection(0, dy > 0 ? 1 : -1);
+  }
+  touchStart = null;
+}, { passive: true });
+
+board.addEventListener("touchend", () => {
+  touchStart = null;
+});

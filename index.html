@@ -11,10 +11,18 @@
     <header class="topbar">
       <div class="title">Snake</div>
       <div class="score">Score: <span id="score">0</span></div>
-      <div class="controls">Arrows / WASD • Space = Pause • R = Restart</div>
+      <div class="controls">Arrows / WASD • Space = Pause • R = Restart • Swipe or Tap D-pad on phone</div>
     </header>
 
     <section class="board" id="board" aria-label="Snake game board"></section>
+
+    <section class="touch-controls" aria-label="Touch controls">
+      <button class="pad up" type="button" data-dir="up">Up</button>
+      <button class="pad left" type="button" data-dir="left">Left</button>
+      <button class="pad center" type="button" data-action="pause">Pause</button>
+      <button class="pad right" type="button" data-dir="right">Right</button>
+      <button class="pad down" type="button" data-dir="down">Down</button>
+    </section>
 
     <footer class="footer">
       <button id="restart" type="button">Restart</button>
