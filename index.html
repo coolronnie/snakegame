@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Snake</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <header class="topbar">
+      <div class="title">Snake</div>
+      <div class="score">Score: <span id="score">0</span></div>
+      <div class="controls">Arrows / WASD • Space = Pause • R = Restart</div>
+    </header>
+
+    <section class="board" id="board" aria-label="Snake game board"></section>
+
+    <footer class="footer">
+      <button id="restart" type="button">Restart</button>
+      <label class="speed">
+        Speed
+        <input id="speed" type="range" min="60" max="200" step="10" value="120" />
+      </label>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
